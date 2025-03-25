@@ -1,5 +1,6 @@
 
-import { LucideIcon, Cloud, Server, LayoutGrid, BarChart, GitBranch, Shield } from 'lucide-react';
+import { LucideIcon, Cloud, Server, LayoutGrid, BarChart, GitBranch, Shield, Clock, Headphones, Globe } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface ServiceCardProps {
   title: string;
@@ -34,30 +35,52 @@ const services = [
     icon: BarChart,
   },
   {
-    title: "Security Implementation",
+    title: "DevSecOps Implementation",
     description: "Implement DevSecOps practices and security measures to protect cloud infrastructure and applications from vulnerabilities and threats.",
     icon: Shield,
+  },
+  {
+    title: "24/7 DevOps Support",
+    description: "Providing round-the-clock support for critical infrastructure, ensuring minimal downtime and rapid issue resolution for business continuity.",
+    icon: Clock,
+  },
+  {
+    title: "DevOps Consultation",
+    description: "Expert consultation on DevOps strategy, tooling, and implementation to help organizations transition to modern deployment practices.",
+    icon: Headphones,
+  },
+  {
+    title: "Global DevOps Solutions",
+    description: "Delivering DevOps solutions for organizations worldwide, leveraging cloud technologies to enable remote teams and distributed infrastructure.",
+    icon: Globe,
   },
 ];
 
 const ServiceCard = ({ title, description, Icon }: ServiceCardProps) => (
-  <div className="bg-background rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 reveal h-full border border-border/50">
-    <div className="mb-4 p-3 bg-accent inline-block rounded-lg">
-      <Icon className="h-6 w-6 text-primary" />
-    </div>
-    <h3 className="text-lg font-semibold mb-3">{title}</h3>
-    <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
-  </div>
+  <Card className="gradient-border card-hover h-full overflow-hidden">
+    <CardContent className="bg-card p-6 h-full flex flex-col rounded-[calc(var(--radius)-1px)]">
+      <div className="mb-4 p-3 gradient-bg rounded-lg inline-block">
+        <Icon className="h-6 w-6 text-white" />
+      </div>
+      <h3 className="text-lg font-semibold mb-3">{title}</h3>
+      <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+    </CardContent>
+  </Card>
 );
 
 const Services = () => {
   return (
-    <section id="services" className="section-padding">
+    <section id="services" className="section-padding relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16 reveal">
-          <span className="inline-block py-1 px-3 mb-4 text-sm bg-accent rounded-full">Offerings</span>
-          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Services I Provide</h2>
-          <div className="h-1 w-20 bg-primary/20 mx-auto rounded-full"></div>
+          <span className="inline-flex items-center gap-2 py-2 px-4 mb-4 rounded-full bg-accent">
+            <span className="h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+            <span className="text-sm font-medium">Professional Services</span>
+          </span>
+          <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 gradient-text">DevOps Services & Support</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
+            Comprehensive DevOps solutions to help organizations automate, scale, and secure their infrastructure.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -71,6 +94,13 @@ const Services = () => {
           ))}
         </div>
       </div>
+      
+      {/* Background elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10 opacity-30"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl -z-10 opacity-30"></div>
+      
+      {/* Grid pattern */}
+      <div className="absolute inset-0 grid-pattern -z-20"></div>
     </section>
   );
 };

@@ -1,6 +1,8 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTransition } from './TransitionProvider';
 
 const navLinks = [
   { name: 'Home', href: '#home' },
@@ -12,117 +14,110 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+  const { isVisible } = useTransition();
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsScrolled(scrollPosition > 10);
-
-      // Update active section based on scroll position
-      const sections = document.querySelectorAll('section[id]');
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        const sectionHeight = section.offsetHeight;
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-          setActiveSection(section.id);
-        }
-      });
+      if (navRef.current) {
+        const navTop = navRef.current.offsetTop || 0;
+        const navHeight = navRef.current.offsetHeight || 0;
+        const scrollY = window.scrollY;
+        
+        setIsScrolled(scrollY > navTop + navHeight);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
   return (
-    <header
+    <header 
+      ref={navRef}
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out py-4 px-6 lg:px-12',
-        isScrolled ? 'frosted-glass' : 'bg-transparent'
+        'fixed top-0 left-0 w-full z-50 transition-all duration-300',
+        isScrolled 
+          ? 'py-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md' 
+          : 'py-5 bg-transparent'
       )}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <a 
-          href="#home" 
-          className="font-display text-xl sm:text-2xl font-bold tracking-tight"
-        >
-          Ahson Shaikh
+      <div className="container mx-auto px-6 md:px-8 lg:px-12 flex justify-between items-center">
+        <a href="#" className="text-2xl font-display font-bold">
+          <span className="text-primary">Ahson</span> Shaikh
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:block">
-          <ul className="flex space-x-8">
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <a
-                  href={link.href}
-                  className={cn(
-                    'text-sm font-medium relative hover:text-primary/80 transition-colors',
-                    'after:content-[""] after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300',
-                    'hover:after:scale-x-100',
-                    activeSection === link.href.slice(1) && 'after:scale-x-100'
-                  )}
-                >
-                  {link.name}
-                </a>
-              </li>
-            ))}
-          </ul>
+        <nav className="hidden md:flex items-center space-x-1">
+          {navLinks.map((link, index) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors
+                ${isScrolled ? 'hover:bg-accent hover:text-accent-foreground' : 'hover:bg-white/10 hover:text-primary'}`}
+            >
+              {link.name}
+            </a>
+          ))}
+          <a 
+            href="#contact" 
+            className="ml-2 inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-6 bg-primary text-primary-foreground shadow hover:bg-primary/90 transition-colors"
+          >
+            Hire Me
+          </a>
         </nav>
 
         {/* Mobile Menu Button */}
-        <button
-          className="flex md:hidden flex-col justify-center items-center w-10 h-10 space-y-1.5 z-50"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        <button 
+          className="md:hidden text-foreground rounded-md p-2 hover:bg-accent"
+          onClick={toggleMenu}
           aria-label="Toggle menu"
         >
-          <span 
-            className={cn(
-              "w-6 h-0.5 bg-primary transition-transform duration-300",
-              isMobileMenuOpen && "transform rotate-45 translate-y-2"
-            )} 
-          />
-          <span 
-            className={cn(
-              "w-6 h-0.5 bg-primary transition-opacity duration-300",
-              isMobileMenuOpen && "opacity-0"
-            )} 
-          />
-          <span 
-            className={cn(
-              "w-6 h-0.5 bg-primary transition-transform duration-300",
-              isMobileMenuOpen && "transform -rotate-45 -translate-y-2"
-            )} 
-          />
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
         {/* Mobile Navigation */}
-        <div 
-          className={cn(
-            "fixed inset-0 frosted-glass md:hidden flex flex-col justify-center items-center transition-opacity duration-300 ease-in-out",
-            isMobileMenuOpen ? "opacity-100 z-40" : "opacity-0 pointer-events-none -z-10"
-          )}
-        >
-          <nav>
-            <ul className="flex flex-col space-y-8 text-center">
+        <div className={cn(
+          "fixed inset-0 z-50 bg-background/95 backdrop-blur-sm md:hidden transition-transform duration-300",
+          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        )}>
+          <div className="flex flex-col h-full p-6">
+            <div className="flex justify-between items-center mb-8">
+              <a href="#" className="text-2xl font-display font-bold">
+                <span className="text-primary">Ahson</span> Shaikh
+              </a>
+              <button 
+                className="text-foreground rounded-md p-2 hover:bg-accent"
+                onClick={toggleMenu}
+                aria-label="Close menu"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            <nav className="flex flex-col space-y-4">
               {navLinks.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className={cn(
-                      "text-xl font-medium py-2 px-4 rounded-md transition-colors",
-                      activeSection === link.href.slice(1) ? "text-primary" : "text-muted-foreground hover:text-primary/80"
-                    )}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </a>
-                </li>
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="px-4 py-3 text-lg font-medium rounded-md hover:bg-accent"
+                  onClick={toggleMenu}
+                >
+                  {link.name}
+                </a>
               ))}
-            </ul>
-          </nav>
+              <a 
+                href="#contact" 
+                className="mt-4 inline-flex items-center justify-center rounded-md text-base font-medium h-12 px-6 bg-primary text-primary-foreground shadow hover:bg-primary/90"
+                onClick={toggleMenu}
+              >
+                Hire Me
+              </a>
+            </nav>
+          </div>
         </div>
       </div>
     </header>

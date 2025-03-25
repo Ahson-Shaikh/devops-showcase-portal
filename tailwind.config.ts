@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -21,7 +20,7 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],
-				display: ['SF Pro Display', 'Inter', 'sans-serif']
+				display: ['Poppins', 'Inter', 'sans-serif']
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -119,6 +118,10 @@ export default {
 				'scale-in': 'scale-in 0.3s ease-out forwards',
 				'slide-in': 'slide-in 0.5s ease-out forwards',
 				'pulse-slow': 'pulse-slow 3s infinite'
+			},
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+				'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
 			}
 		}
 	},
