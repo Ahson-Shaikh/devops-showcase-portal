@@ -1,5 +1,5 @@
-
 import { cn } from '@/lib/utils';
+import { ExternalLink } from 'lucide-react';
 
 const experiences = [
   {
@@ -8,7 +8,8 @@ const experiences = [
     position: "DevOps Engineer",
     period: "Dec 2024 - Present",
     location: "Remote",
-    description: "Currently leading DevOps initiatives, focusing on web development and process automation."
+    description: "Currently leading DevOps initiatives, focusing on web development and process automation.",
+    website: "https://easypanel.io"
   },
   {
     id: 2,
@@ -16,7 +17,8 @@ const experiences = [
     position: "Chief Executive Officer",
     period: "Dec 2024 - Present",
     location: "Pakistan · Remote",
-    description: "Leading a specialized DevOps consulting firm focused on cloud infrastructure optimization and automation solutions."
+    description: "Leading a specialized DevOps consulting firm focused on cloud infrastructure optimization and automation solutions.",
+    website: "https://sphereops.org"
   },
   {
     id: 3,
@@ -24,7 +26,8 @@ const experiences = [
     position: "DevOps Engineer",
     period: "Oct 2023 - Dec 2024",
     location: "United States · Hybrid",
-    description: "Developed custom Terraform modules for Azure infrastructure. Deployed production-grade infrastructure on AWS with Terraform. Created Python-based backend systems integrated with Slack. Set up real-time monitoring for system metrics and syslogs."
+    description: "Developed custom Terraform modules for Azure infrastructure. Deployed production-grade infrastructure on AWS with Terraform. Created Python-based backend systems integrated with Slack. Set up real-time monitoring for system metrics and syslogs.",
+    website: "https://www.connection.com"
   },
   {
     id: 4,
@@ -32,7 +35,8 @@ const experiences = [
     position: "DevOps Engineer",
     period: "Feb 2023 - Oct 2023",
     location: "Hyderabad, Sindh, Pakistan",
-    description: "Managed CloudFront cost optimization. Configured Grafana, Telegraf, and InfluxDB for real-time monitoring. Designed cloud architecture and implemented CI/CD with AWS CodeSuite. Worked on infrastructure provisioning with Terraform."
+    description: "Managed CloudFront cost optimization. Configured Grafana, Telegraf, and InfluxDB for real-time monitoring. Designed cloud architecture and implemented CI/CD with AWS CodeSuite. Worked on infrastructure provisioning with Terraform.",
+    website: "https://net2apps.com"
   },
   {
     id: 5,
@@ -40,7 +44,8 @@ const experiences = [
     position: "IT Support Engineer & DevOps",
     period: "Nov 2020 - Feb 2023",
     location: "Karāchi, Sindh, Pakistan",
-    description: "Managed servers and networking infrastructure. Built custom Docker images. Deployed Kubernetes clusters. Gained hands-on experience with Linux/Ubuntu/CentOS systems and AWS EC2 deployments."
+    description: "Managed servers and networking infrastructure. Built custom Docker images. Deployed Kubernetes clusters. Gained hands-on experience with Linux/Ubuntu/CentOS systems and AWS EC2 deployments.",
+    website: "https://fiber-beam.net"
   }
 ];
 
@@ -56,7 +61,15 @@ const ExperienceItem = ({ experience, isLeft }: { experience: typeof experiences
       <div className="bg-background rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
         <span className="inline-block text-xs font-medium text-muted-foreground mb-2">{experience.period}</span>
         <h3 className="text-lg font-semibold">{experience.position}</h3>
-        <h4 className="text-primary font-medium mb-2">{experience.company}</h4>
+        <a 
+          href={experience.website}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center text-primary font-medium mb-2 hover:text-primary/80 transition-colors"
+        >
+          {experience.company}
+          <ExternalLink className="ml-1 h-3 w-3" />
+        </a>
         <p className="text-sm text-muted-foreground mb-3">{experience.location}</p>
         <p className="text-sm leading-relaxed">{experience.description}</p>
       </div>
